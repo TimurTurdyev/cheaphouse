@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\MoonShine\Pages\GlobalSettingPage;
+use App\MoonShine\Pages\HomePage;
+use App\MoonShine\Resources\HomeResource;
 use MoonShine\Providers\MoonShineApplicationServiceProvider;
 use MoonShine\MoonShine;
 use MoonShine\Menu\MenuGroup;
@@ -36,29 +39,22 @@ class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
     /**
      * @return Closure|list<MenuElement>
      */
-    protected function menu(): array
+    protected function menu(): array|Closure
     {
         return [
-            MenuGroup::make(static fn() => __('moonshine::ui.resource.system'), [
-                MenuItem::make(
-                    static fn() => __('moonshine::ui.resource.admins_title'),
-                    new MoonShineUserResource()
-                ),
-                MenuItem::make(
-                    static fn() => __('moonshine::ui.resource.role_title'),
-                    new MoonShineUserRoleResource()
-                ),
+            MenuItem::make('Главная', new HomePage()),
+            MenuItem::make('Настройки', new GlobalSettingPage()),
+            MenuGroup::make(__('moonshine::ui.resource.system'), [
+                MenuItem::make(__('moonshine::ui.resource.admins_title'), new MoonShineUserResource()),
+                MenuItem::make(__('moonshine::ui.resource.role_title'), new MoonShineUserRoleResource()),
             ]),
-
-            MenuItem::make('Documentation', 'https://moonshine-laravel.com')
-                ->badge(fn() => 'Check'),
         ];
     }
 
     /**
      * @return Closure|array{css: string, colors: array, darkColors: array}
      */
-    protected function theme(): array
+    protected function theme(): array|Closure
     {
         return [];
     }

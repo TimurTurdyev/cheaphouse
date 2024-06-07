@@ -47,10 +47,7 @@ final class MoonShineLayout implements MoonShineLayoutContract
                             </a>
                         HTML,
                         now()->year
-                    ))
-                    ->menu([
-                        'https://moonshine-laravel.com/docs' => 'Documentation',
-                    ]),
+                    )),
             ])->customAttributes(['class' => 'layout-page']),
         ])->bodyClass('theme-minimalistic');
     }
