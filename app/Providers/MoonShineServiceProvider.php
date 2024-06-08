@@ -7,6 +7,9 @@ namespace App\Providers;
 use App\MoonShine\Pages\GlobalSettingPage;
 use App\MoonShine\Pages\HomePage;
 use App\MoonShine\Resources\HomeResource;
+use App\MoonShine\Resources\PostResource;
+use App\MoonShine\Resources\ProjectResource;
+use App\MoonShine\Resources\ProjectTypeResource;
 use MoonShine\Providers\MoonShineApplicationServiceProvider;
 use MoonShine\MoonShine;
 use MoonShine\Menu\MenuGroup;
@@ -44,6 +47,11 @@ class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
         return [
             MenuItem::make('Главная', new HomePage()),
             MenuItem::make('Настройки', new GlobalSettingPage()),
+            MenuGroup::make('Контент', [
+                MenuItem::make('Статьи', new PostResource()),
+                MenuItem::make('Проекты', new ProjectResource()),
+                MenuItem::make('Типы проектов', new ProjectTypeResource()),
+            ]),
             MenuGroup::make(__('moonshine::ui.resource.system'), [
                 MenuItem::make(__('moonshine::ui.resource.admins_title'), new MoonShineUserResource()),
                 MenuItem::make(__('moonshine::ui.resource.role_title'), new MoonShineUserRoleResource()),

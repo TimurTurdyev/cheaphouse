@@ -10,32 +10,29 @@ use Illuminate\View\ComponentAttributeBag;
 use MoonShine\ActionButtons\ActionButton;
 use MoonShine\Components\FormBuilder;
 use MoonShine\Components\Icon;
+use MoonShine\Components\MoonShineComponent;
 use MoonShine\Components\TableBuilder;
-use MoonShine\Components\Title;
 use MoonShine\Decorations\Block;
 use MoonShine\Decorations\Column;
 use MoonShine\Decorations\Grid;
-use MoonShine\Decorations\LineBreak;
 use MoonShine\Decorations\Tab;
 use MoonShine\Decorations\Tabs;
-use MoonShine\Fields\Email;
-use MoonShine\Fields\Hidden;
-use MoonShine\Fields\Phone;
-use MoonShine\Fields\Textarea;
-use MoonShine\Fields\Url;
 use MoonShine\Enums\JsEvent;
 use MoonShine\Enums\ToastType;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
+use MoonShine\Fields\Hidden;
 use MoonShine\Fields\Image;
+use MoonShine\Fields\Number;
 use MoonShine\Fields\Position;
 use MoonShine\Fields\Preview;
 use MoonShine\Fields\StackFields;
 use MoonShine\Fields\Text;
+use MoonShine\Fields\Textarea;
+use MoonShine\Fields\Url;
 use MoonShine\Http\Responses\MoonShineJsonResponse;
 use MoonShine\MoonShineRequest;
 use MoonShine\Pages\Page;
-use MoonShine\Components\MoonShineComponent;
 use MoonShine\Support\AlpineJs;
 
 #[\MoonShine\Attributes\Icon('heroicons.outline.home')]
@@ -55,6 +52,7 @@ class HomePage extends Page
 
     /**
      * @return list<MoonShineComponent>
+     * @throws \Throwable
      */
     public function components(): array
     {
@@ -77,8 +75,9 @@ class HomePage extends Page
                                 Text::make('Title')->badge(),
                                 Text::make('Text')->badge(),
                                 Url::make('Link', 'link'),
+                                Text::make('linkText', 'linkText'),
                             ]),
-                            Image::make('image'),
+                            Image::make('Изображение 1920x1080px', 'image'),
                         ])
                             ->customAttributes([
                                 'data-handle' => '.handle',
@@ -109,6 +108,10 @@ class HomePage extends Page
                     Tab::make('О нас', [
                         $this->aboutForm(),
                     ]),
+
+                    Tab::make('Сео', [
+                        $this->seoForm(),
+                    ])
                 ]),
             ]),
         ];
@@ -120,8 +123,9 @@ class HomePage extends Page
             Hidden::make(column: 'id')->setValue($banner['id'] ?? '')->required(),
             Text::make('Заголовок', 'title')->setValue($banner['title'] ?? '')->required(),
             Textarea::make('Текст', 'text')->setValue($banner['text'] ?? '')->required(),
-            Text::make('Ссылка', 'link')->setValue($banner['link'] ?? ''),
-            Image::make('Изображение', 'image')
+            Text::make('Ссылка', 'link')->setValue($banner['link'] ?? '')->hint('https://example.com или оставить пустым, ссылка показывать не будет')->required(),
+            Text::make('Текст ссылки', 'linkText')->setValue($banner['linkText'] ?? '')->hint('Можно оставить пустым, будет дефолтная подпись "Подробнее"'),
+            Image::make('Изображение 1920x1080px', 'image')
                 ->setValue($banner['image'] ?? '')
                 ->customName(static function (UploadedFile $file, Field $field) {
                     return str(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))
@@ -174,6 +178,7 @@ class HomePage extends Page
                 'title' => $request->input('title'),
                 'text' => $request->input('text'),
                 'link' => $request->input('link'),
+                'linkText' => $request->input('linkText'),
                 'image' => $currentImage,
             ];
         } else {
@@ -182,6 +187,7 @@ class HomePage extends Page
                 'title' => $request->input('title'),
                 'text' => $request->input('text'),
                 'link' => $request->input('link'),
+                'linkText' => $request->input('linkText'),
                 'image' => $currentImage,
             ];
         }
@@ -268,18 +274,42 @@ class HomePage extends Page
                 'title' => $banner['title'],
                 'text' => $banner['text'],
                 'link' => $banner['link'],
+                'linkText' => $banner['linkText'] ?? 'Перейти',
                 'image' => $banner['image'],
             ];
         }, $banners, array_keys($banners));
     }
 
+    /**
+     * @throws \Throwable
+     */
     public function saveAbout(MoonShineRequest $request)
     {
-        $request->validate([
+        $requestData = $request->validate([
             'title' => ['required', 'string'],
             'text' => ['required', 'string'],
-            'image' => ['required', 'image'],
         ]);
+
+        $fields = Fields::make($this->aboutFields());
+
+        /** @var Image $image */
+        $image = $fields
+            ->onlyFields()
+            ->findByClass(Image::class);
+
+        $imageFile = $request->file('image');
+        $currentImage = $request->input('hidden_image', '');
+
+        if (!is_null($imageFile)) {
+            if ($currentImage) {
+                $image->deleteFile($currentImage);
+            }
+            $currentImage = $image->store($imageFile);
+        }
+
+        $requestData['image'] = $currentImage;
+
+        $this->getSettings()->set('about', $requestData);
 
         return MoonShineJsonResponse::make()->toast('Сохранено!', ToastType::SUCCESS);
     }
@@ -289,6 +319,39 @@ class HomePage extends Page
         return $this->getSettings()->get('about', []);
     }
 
+    private function aboutFields(): array
+    {
+        return [
+            Grid::make([
+                Column::make([
+                    Text::make('Заголовок', 'title')->required(),
+                    Textarea::make('Text', 'text')->required(),
+                    Number::make('Число под текстом', 'experience')->hint('26')->required(),
+                    Textarea::make('Подпись числа', 'experienceText')->hint('Лет на рынке')->required(),
+                ])->columnSpan(6),
+
+                Column::make([
+                    Image::make('Изображение 470x660px', 'image')
+                        ->customName(static function (UploadedFile $file, Field $field) {
+                            return str(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))
+                                ->lower()
+                                ->slug(language: 'ru')
+                                ->append(".{$file->extension()}");
+                        })
+                        ->disk(config('moonshine.disk', 'public'))
+                        ->options(config('moonshine.disk_options', []))
+                        ->dir('home')
+                        ->removable()
+                        ->required()
+                        ->allowedExtensions(['jpg', 'png', 'jpeg'])
+                ])->columnSpan(6)
+            ])
+        ];
+    }
+
+    /**
+     * @throws \Throwable
+     */
     private function aboutForm()
     {
         return FormBuilder::make()
@@ -297,31 +360,36 @@ class HomePage extends Page
                 'saveAbout',
                 events: [AlpineJs::event(JsEvent::FORM_RESET, 'about-form')]
             )
-            ->fields([
-                Grid::make([
-                    Column::make([
-                        Text::make('Заголовок', 'title')->required(),
-                        Textarea::make('Text', 'text')->required(),
-                    ])->columnSpan(6),
-
-                    Column::make([
-                        Image::make('Изображение', 'image')
-                            ->customName(static function (UploadedFile $file, Field $field) {
-                                return str(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))
-                                    ->lower()
-                                    ->slug(language: 'ru')
-                                    ->append(".{$file->extension()}");
-                            })
-                            ->disk(config('moonshine.disk', 'public'))
-                            ->options(config('moonshine.disk_options', []))
-                            ->dir('home')
-                            ->removable()
-                            ->allowedExtensions(['jpg', 'png', 'jpeg'])
-                    ])->columnSpan(6)
-                ])
-            ])
+            ->fields($this->aboutFields())
             ->fill($this->about())
             ->submit('Сохранить', ['class' => 'btn-primary btn-lg']);
+    }
+
+    private function seoForm()
+    {
+        return FormBuilder::make()
+            ->name('about-form')
+            ->asyncMethod(
+                'saveSeo',
+            )
+            ->fields([
+                Text::make('Title', 'title')->required(),
+                Textarea::make('Description', 'description')->required(),
+            ])
+            ->fill($this->getSettings()->get('seo', []))
+            ->submit('Сохранить', ['class' => 'btn-primary btn-lg']);
+    }
+
+    public function saveSeo(MoonShineRequest $request)
+    {
+        $requestData = $request->validate([
+            'title' => ['required', 'string'],
+            'description' => ['required', 'string'],
+        ]);
+
+        $this->getSettings()->set('seo', $requestData);
+
+        return MoonShineJsonResponse::make()->toast('Сохранено!', ToastType::SUCCESS);
     }
 
     private function getSettings(): SettingEloquentStorage
