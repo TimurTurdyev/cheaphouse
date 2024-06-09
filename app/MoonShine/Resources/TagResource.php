@@ -14,9 +14,7 @@ use MoonShine\Fields\Switcher;
 use MoonShine\Fields\Text;
 use MoonShine\Resources\ModelResource;
 
-/**
- * @extends ModelResource<Tag>
- */
+#[\MoonShine\Attributes\Icon('heroicons.outline.tag')]
 class TagResource extends ModelResource
 {
     protected string $model = Tag::class;

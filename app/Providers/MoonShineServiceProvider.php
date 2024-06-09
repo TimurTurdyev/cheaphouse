@@ -50,7 +50,7 @@ class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
             MenuGroup::make('Контент', [
                 MenuItem::make('Статьи', new PostResource()),
                 MenuItem::make('Проекты', new ProjectResource()),
-                MenuItem::make('Типы проектов', new TagResource()),
+                MenuItem::make('Теги', new TagResource()),
             ]),
             MenuGroup::make(__('moonshine::ui.resource.system'), [
                 MenuItem::make(__('moonshine::ui.resource.admins_title'), new MoonShineUserResource()),

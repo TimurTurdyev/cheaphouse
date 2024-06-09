@@ -2,7 +2,6 @@
 
 namespace App\MoonShine\Resources;
 
-use App\Models\Post;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;

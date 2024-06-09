@@ -6,14 +6,10 @@ namespace App\MoonShine\Resources;
 
 use App\Models\Post;
 use App\Models\SettingEloquentStorage;
-use Illuminate\Database\Eloquent\Builder;
-use MoonShine\Fields\Field;
 use MoonShine\Fields\ID;
 use MoonShine\Resources\ModelResource;
 
-/**
- * @extends ModelResource<Post>
- */
+#[\MoonShine\Attributes\Icon('heroicons.outline.newspaper')]
 class PostResource extends ModelResource
 {
     use PostFiledTrait;

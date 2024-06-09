@@ -5,14 +5,11 @@ declare(strict_types=1);
 namespace App\MoonShine\Resources;
 
 use App\Models\Post;
-use App\Models\Project;
 use App\Models\SettingEloquentStorage;
 use MoonShine\Fields\ID;
 use MoonShine\Resources\ModelResource;
 
-/**
- * @extends ModelResource<Project>
- */
+#[\MoonShine\Attributes\Icon('heroicons.outline.wallet')]
 class ProjectResource extends ModelResource
 {
     use PostFiledTrait;
