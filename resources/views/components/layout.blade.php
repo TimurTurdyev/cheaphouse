@@ -82,7 +82,8 @@
             <div class="navbar-spacer hidden-sm hidden-xs"></div>
 
             <address class="navbar-address hidden-sm hidden-xs">
-                ЗВОНИТЕ: <span class="text-dark"><a href="" class="text-dark">{{ $globalSetting->get('phone', config('app.phone')) }}</a></span>
+                ЗВОНИТЕ: <span class="text-dark"><a href=""
+                                                    class="text-dark">{{ $globalSetting->get('phone', config('app.phone')) }}</a></span>
             </address>
         </header>
 
@@ -169,5 +170,8 @@
 <!-- Scripts -->
 <script src="{{ asset('theme/js/scripts.js') }}"></script>
 <script src="{{ asset('theme/js/rev-slider-init.js') }}"></script>
+@if( app()->isProduction() )
+{!! $globalSetting->get('$globalSetting') !!}
+@endif
 </body>
 </html>
