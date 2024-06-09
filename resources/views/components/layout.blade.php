@@ -171,7 +171,7 @@
 <script src="{{ asset('theme/js/scripts.js') }}"></script>
 <script src="{{ asset('theme/js/rev-slider-init.js') }}"></script>
 @if( app()->isProduction() )
-{!! $globalSetting->get('$globalSetting') !!}
+{!! $globalSetting->get('analytics') !!}
 @endif
 </body>
 </html>
