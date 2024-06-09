@@ -74,6 +74,10 @@ class GlobalSettingPage extends Page
     {
         $requestData = $request->validate([
             'phone' => ['required', 'string'],
+            'email' => ['required', 'email'],
+            'address' => ['required', 'string'],
+            'logoTitle' => ['required', 'string'],
+            'logoSubTitle' => ['required', 'string'],
         ]);
 
         $this->globalSetting()->set($requestData);

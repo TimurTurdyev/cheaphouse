@@ -9,7 +9,7 @@ use App\MoonShine\Pages\HomePage;
 use App\MoonShine\Resources\HomeResource;
 use App\MoonShine\Resources\PostResource;
 use App\MoonShine\Resources\ProjectResource;
-use App\MoonShine\Resources\ProjectTypeResource;
+use App\MoonShine\Resources\TagResource;
 use MoonShine\Providers\MoonShineApplicationServiceProvider;
 use MoonShine\MoonShine;
 use MoonShine\Menu\MenuGroup;
@@ -50,7 +50,7 @@ class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
             MenuGroup::make('Контент', [
                 MenuItem::make('Статьи', new PostResource()),
                 MenuItem::make('Проекты', new ProjectResource()),
-                MenuItem::make('Типы проектов', new ProjectTypeResource()),
+                MenuItem::make('Типы проектов', new TagResource()),
             ]),
             MenuGroup::make(__('moonshine::ui.resource.system'), [
                 MenuItem::make(__('moonshine::ui.resource.admins_title'), new MoonShineUserResource()),

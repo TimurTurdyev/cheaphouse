@@ -19,10 +19,11 @@
           rel="stylesheet">
     <link href="{{ asset('theme/css/style.css') }}" rel="stylesheet" media="screen">
     @if ( App::environment('local') )
-        @vite( ['resources/js/app.js', 'vendor/courier/build'] )
+        @vite( ['resources/js/app.js'] )
     @endif
 </head>
 <body>
+
 <div class="animsition">
     <div class="wrapper boxed">
         <!-- Content CLick Capture-->
@@ -32,46 +33,16 @@
             <span class="close-menu icon-cross2 right-boxed"></span>
             <ul class="menu-list right-boxed">
                 <li class="active">
-                    <a href="/">Home</a>
-                    <ul>
-                        <li class="active"><a href="/">Classic</a></li>
-                        <li><a href="/">Full page</a></li>
-                        <li><a href="/">Dark</a></li>
-                    </ul>
+                    <a href="{{ route('home') }}">Главная</a>
                 </li>
                 <li>
-                    <a href="/">Works</a>
-                    <ul>
-                        <li><a href="/">Grid</a></li>
-                        <li><a href="/">Masonry</a></li>
-                        <li><a href="/">Carousel</a></li>
-                        <li><a href="/">Project Detail</a></li>
-                    </ul>
+                    <a href="{{ route('project.index') }}">Наши работы</a>
                 </li>
                 <li>
-                    <a href="/">News</a>
-                    <ul>
-                        <li><a href="/">Grid</a></li>
-                        <li><a href="/">Listing</a></li>
-                        <li><a href="/">Masonry</a></li>
-                    </ul>
+                    <a href="{{ route('post.index') }}">Статьи</a>
                 </li>
-                <li>
-                    <a href="/">Post detail</a>
-                    <ul>
-                        <li><a href="/">Image</a></li>
-                        <li><a href="/">Gallery</a></li>
-                        <li><a href="/">Video</a></li>
-                        <li><a href="/">Right Sidebar</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="/">Pages</a>
-                    <ul>
-                        <li><a href="/">About</a></li>
-                        <li><a href="/">Contact</a></li>
-                    </ul>
-                </li>
+                <li><a href="/">О нас</a></li>
+                <li><a href="/">Контакты</a></li>
             </ul>
             <div class="menu-footer right-boxed">
                 <div class="social-list">
@@ -96,8 +67,8 @@
             <a class="brand" href="/">
                 <img alt="" src="{{ asset('theme/images/brand.png') }}">
                 <div class="brand-info">
-                    <div class="brand-name">{{ config('app.name_logo') }}</div>
-                    <div class="brand-text">{{ config('app.name_logo_desc') }}</div>
+                    <div class="brand-name">{{ $globalSetting->get('logoTitle', config('app.name_logo')) }}</div>
+                    <div class="brand-text">{{ $globalSetting->get('logoSubTitle', config('app.name_logo_desc')) }}</div>
                 </div>
             </a>
 
@@ -112,7 +83,7 @@
             <div class="navbar-spacer hidden-sm hidden-xs"></div>
 
             <address class="navbar-address hidden-sm hidden-xs">
-                ЗВОНИТЕ: <span class="text-dark"><a href="" class="text-dark">{{ config('app.phone') }}</a></span>
+                ЗВОНИТЕ: <span class="text-dark"><a href="" class="text-dark">{{ $globalSetting->get('phone', config('app.phone')) }}</a></span>
             </address>
         </header>
 

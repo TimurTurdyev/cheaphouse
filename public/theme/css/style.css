@@ -2942,7 +2942,7 @@ a.brand:focus{
 }
 
 .post-thumbnail{
-  background: url(../images/news/1-1920x1080.jpg) 50%  no-repeat;
+  background: var(--bg-image) 50%  no-repeat;
   background-size:cover;
   padding: 16.4rem 15px 19rem;
 }

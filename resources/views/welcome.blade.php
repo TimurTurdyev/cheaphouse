@@ -170,7 +170,8 @@
                                 <div class="experience-border"></div>
                                 <div class="experience-content">
                                     <div class="experience-number">{{ $about['experience'] ?? '' }}</div>
-                                    <div class="experience-info wow fadeInDown">{!! nl2br(trim((string)($about['experienceText'] ?? ''))) !!}</div>
+                                    <div
+                                        class="experience-info wow fadeInDown">{!! nl2br(trim((string)($about['experienceText'] ?? ''))) !!}</div>
                                 </div>
                             </div>
                         </div>
@@ -215,118 +216,45 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-5">
-                        <h2 class="section-title">Latest Projects</h2>
+                        <h2 class="section-title">Наши проекты</h2>
                     </div>
                     <div class="col-lg-7">
                         <div class="filter-content">
                             <ul class="filter-carousel filter pull-lg-right js-filter-carousel">
-                                <li class="active"><a href="index.html#" class="all" data-filter="*">All</a></li>
-                                <li><a href="index.html#" data-filter=".building">Building </a></li>
-                                <li><a href="index.html#" data-filter=".interior-exterior">Interior & Exterior </a>
+                                <li class="active"><a href="{{ route('home') }}#" class="all" data-filter="*">Все</a>
                                 </li>
+                                @foreach( $projectTypes as $projectType )
+                                    <li>
+                                        <a href="{{ route('home') }}#"
+                                           data-filter=".{{ Str::slug($projectType->name) }}">{{ $projectType->name }}</a>
+                                    </li>
+                                @endforeach
                             </ul>
-                            <a href="index.html" class="view-projects">View All Projects</a>
+                            <a href="{{ route('project.index') }}" class="view-projects">Смотреть все проекты</a>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="project-carousel owl-carousel">
-                <div class="project-item item-shadow building">
-                    <img alt="" class="img-responsive" src="{{ asset('theme/images/projects/1-426x574.jpg') }}">
-                    <div class="project-hover">
-                        <div class="project-hover-content">
-                            <h3 class="project-title">Triangle<br>Concrete House<br>On Lake</h3>
-                            <p class="project-description">Lorem ipsum dolor sit amet, consectetur adipil pcing
-                                elit. Proin nunc leo, rhoncus sit amet tolil arcu vel, pharetra volutpat sem lorn
-                                Donec tincidunt velit nec laoreet semper...</p>
+                @foreach( $projects as $project )
+                    @php
+                        $tags = [];
+                        foreach( $project->tags as $tag ) {
+                            $tags[] = Str::slug($tag->name);
+                        }
+                    @endphp
+                    <div class="project-item item-shadow {{ implode(' ', $tags) }}">
+                        <img alt="" class="img-responsive" src="{{ asset('storage/' . $project->image) }}">
+                        <div class="project-hover">
+                            <div class="project-hover-content">
+                                <h3 class="project-title">{{ $project->title }}</h3>
+                                <p class="project-description">{{ $project->preview_text }}...</p>
+                            </div>
                         </div>
+                        <a href="{{ route('project.detail', $project->slug) }}" class="link-arrow">Подробнее <i
+                                class="icon ion-ios-arrow-right"></i></a>
                     </div>
-                    <a href="index.html" class="link-arrow">See project <i class="icon ion-ios-arrow-right"></i></a>
-                </div>
-                <div class="project-item item-shadow building">
-                    <img alt="" class="img-responsive" src="{{ asset('theme/images/projects/2-426x574.jpg') }}">
-                    <div class="project-hover">
-                        <div class="project-hover-content">
-                            <h3 class="project-title">Ocean<br>Museum<br>Italy</h3>
-                            <p class="project-description">Lorem ipsum dolor sit amet, consectetur adipil pcing
-                                elit. Proin nunc leo, rhoncus sit amet tolil arcu vel, pharetra volutpat sem lorn
-                                Donec tincidunt velit nec laoreet semper...</p>
-                        </div>
-                    </div>
-                    <a href="index.html" class="link-arrow">See project <i class="icon ion-ios-arrow-right"></i></a>
-                </div>
-                <div class="project-item item-shadow building">
-                    <img alt="" class="img-responsive" src="{{ asset('theme/images/projects/3-426x574.jpg') }}">
-                    <div class="project-hover">
-                        <div class="project-hover-content">
-                            <h3 class="project-title">Milko<br>Co-Working<br>Building</h3>
-                            <p class="project-description">Lorem ipsum dolor sit amet, consectetur adipil pcing
-                                elit. Proin nunc leo, rhoncus sit amet tolil arcu vel, pharetra volutpat sem lorn
-                                Donec tincidunt velit nec laoreet semper...</p>
-                        </div>
-                    </div>
-                    <a href="index.html" class="link-arrow">See project <i class="icon ion-ios-arrow-right"></i></a>
-                </div>
-                <div class="project-item item-shadow building">
-                    <img alt="" class="img-responsive" src="{{ asset('theme/images/projects/4-426x574.jpg') }}">
-                    <div class="project-hover">
-                        <div class="project-hover-content">
-                            <h3 class="project-title">Redesign<br>Interior For<br>Villa</h3>
-                            <p class="project-description">Lorem ipsum dolor sit amet, consectetur adipil pcing
-                                elit. Proin nunc leo, rhoncus sit amet tolil arcu vel, pharetra volutpat sem lorn
-                                Donec tincidunt velit nec laoreet semper...</p>
-                        </div>
-                    </div>
-                    <a href="index.html" class="link-arrow">See project <i class="icon ion-ios-arrow-right"></i></a>
-                </div>
-                <div class="project-item item-shadow interior-exterior">
-                    <img alt="" class="img-responsive" src="{{ asset('theme/images/projects/5-426x574.jpg') }}">
-                    <div class="project-hover">
-                        <div class="project-hover-content">
-                            <h3 class="project-title">Wooden<br>Hozirontal<br>Villa</h3>
-                            <p class="project-description">Lorem ipsum dolor sit amet, consectetur adipil pcing
-                                elit. Proin nunc leo, rhoncus sit amet tolil arcu vel, pharetra volutpat sem lorn
-                                Donec tincidunt velit nec laoreet semper...</p>
-                        </div>
-                    </div>
-                    <a href="index.html" class="link-arrow">See project <i class="icon ion-ios-arrow-right"></i></a>
-                </div>
-                <div class="project-item item-shadow interior-exterior">
-                    <img alt="" class="img-responsive" src="{{ asset('theme/images/projects/6-426x574.jpg') }}">
-                    <div class="project-hover">
-                        <div class="project-hover-content">
-                            <h3 class="project-title">Small<br>House Near<br>Wroclaw</h3>
-                            <p class="project-description">Lorem ipsum dolor sit amet, consectetur adipil pcing
-                                elit. Proin nunc leo, rhoncus sit amet tolil arcu vel, pharetra volutpat sem lorn
-                                Donec tincidunt velit nec laoreet semper...</p>
-                        </div>
-                    </div>
-                    <a href="index.html" class="link-arrow">See project <i class="icon ion-ios-arrow-right"></i></a>
-                </div>
-                <div class="project-item item-shadow interior-exterior">
-                    <img alt="" class="img-responsive" src="{{ asset('theme/images/projects/7-426x574.jpg') }}">
-                    <div class="project-hover">
-                        <div class="project-hover-content">
-                            <h3 class="project-title">Bellecomde<br>Holiday<br>Residence</h3>
-                            <p class="project-description">Lorem ipsum dolor sit amet, consectetur adipil pcing
-                                elit. Proin nunc leo, rhoncus sit amet tolil arcu vel, pharetra volutpat sem lorn
-                                Donec tincidunt velit nec laoreet semper...</p>
-                        </div>
-                    </div>
-                    <a href="index.html" class="link-arrow">See project <i class="icon ion-ios-arrow-right"></i></a>
-                </div>
-                <div class="project-item item-shadow interior-exterior">
-                    <img alt="" class="img-responsive" src="{{ asset('theme/images/projects/8-426x574.jpg') }}">
-                    <div class="project-hover">
-                        <div class="project-hover-content">
-                            <h3 class="project-title">Cubic<br>Inter Mesuem<br>In Rome</h3>
-                            <p class="project-description">Lorem ipsum dolor sit amet, consectetur adipil pcing
-                                elit. Proin nunc leo, rhoncus sit amet tolil arcu vel, pharetra volutpat sem lorn
-                                Donec tincidunt velit nec laoreet semper...</p>
-                        </div>
-                    </div>
-                    <a href="index.html" class="link-arrow">See project <i class="icon ion-ios-arrow-right"></i></a>
-                </div>
+                @endforeach
             </div>
         </section>
 
@@ -417,55 +345,12 @@
 
         <section class="section-news section">
             <div class="container">
-                <h2 class="section-title">Latest News <a href="index.html" class="link-arrow-2 pull-right">All
-                        Articles <i class="icon ion-ios-arrow-right"></i></a></h2>
-                <div class="news-carousel owl-carousel">
-                    <div class="news-item">
-                        <img alt="" src="{{ asset('theme/images/news/1-370x370.jpg') }}">
-                        <div class="news-hover">
-                            <div class="hover-border">
-                                <div></div>
-                            </div>
-                            <div class="content">
-                                <div class="time">Dec 15th, 2016</div>
-                                <h3 class="news-title">Discover Architecture Of Bario</h3>
-                                <p class="news-description">Lorem ipsum dolor sit amet, consect etur adipiscing
-                                    elit. Mauris vel auctorol est. Integer nunc ipsum...</p>
-                            </div>
-                            <a class="read-more" href="index.html#">Continue</a>
-                        </div>
-                    </div>
-                    <div class="news-item">
-                        <img alt="" src="{{ asset('theme/images/news/2-370x370.jpg') }}">
-                        <div class="news-hover">
-                            <div class="hover-border">
-                                <div></div>
-                            </div>
-                            <div class="content">
-                                <div class="time">Dec 15th, 2016</div>
-                                <h3 class="news-title">Discover Architecture Of Bario</h3>
-                                <p class="news-description">Lorem ipsum dolor sit amet, consect etur adipiscing
-                                    elit. Mauris vel auctorol est. Integer nunc ipsum...</p>
-                            </div>
-                            <a class="read-more" href="index.html#">Continue</a>
-                        </div>
-                    </div>
-                    <div class="news-item">
-                        <img alt="" src="{{ asset('theme/images/news/3-370x370.jpg') }}">
-                        <div class="news-hover">
-                            <div class="hover-border">
-                                <div></div>
-                            </div>
-                            <div class="content">
-                                <div class="time">Dec 15th, 2016</div>
-                                <h3 class="news-title">Discover Architecture Of Bario</h3>
-                                <p class="news-description">Lorem ipsum dolor sit amet, consect etur adipiscing
-                                    elit. Mauris vel auctorol est. Integer nunc ipsum...</p>
-                            </div>
-                            <a class="read-more" href="index.html#">Continue</a>
-                        </div>
-                    </div>
-                </div>
+                <h2 class="section-title">Последние записи
+                    <a href="{{ route('post.index') }}" class="link-arrow-2 pull-right">
+                        Все статьи <i class="icon ion-ios-arrow-right"></i>
+                    </a>
+                </h2>
+                <x-post-carousel :items="$posts" route="post.detail"></x-post-carousel>
             </div>
         </section>
     </div>

@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Resources;
 
+use App\Models\Tag;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\ProjectType;
-
+use MoonShine\Components\MoonShineComponent;
+use MoonShine\Decorations\Block;
+use MoonShine\Fields\Field;
+use MoonShine\Fields\ID;
+use MoonShine\Fields\Switcher;
 use MoonShine\Fields\Text;
 use MoonShine\Resources\ModelResource;
-use MoonShine\Decorations\Block;
-use MoonShine\Fields\ID;
-use MoonShine\Fields\Field;
-use MoonShine\Components\MoonShineComponent;
 
 /**
- * @extends ModelResource<ProjectType>
+ * @extends ModelResource<Tag>
  */
-class ProjectTypeResource extends ModelResource
+class TagResource extends ModelResource
 {
-    protected string $model = ProjectType::class;
+    protected string $model = Tag::class;
 
-    protected string $title = 'Типы проектов';
+    protected string $title = 'Список тегов';
     protected bool $createInModal = true;
     protected bool $editInModal = true;
 
@@ -34,20 +34,16 @@ class ProjectTypeResource extends ModelResource
             Block::make([
                 ID::make()->sortable(),
                 Text::make('Название', 'name')->required(),
+                Switcher::make('Статус', 'is_published')->required(),
             ]),
         ];
     }
 
-    /**
-     * @param ProjectType $item
-     *
-     * @return array<string, string[]|string>
-     * @see https://laravel.com/docs/validation#available-validation-rules
-     */
     public function rules(Model $item): array
     {
         return [
             'name' => ['required', 'string', 'max:255'],
+            'is_published' => ['required', 'boolean'],
         ];
     }
 }
