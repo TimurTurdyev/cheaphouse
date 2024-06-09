@@ -6,20 +6,18 @@ namespace App\Providers;
 
 use App\MoonShine\Pages\GlobalSettingPage;
 use App\MoonShine\Pages\HomePage;
-use App\MoonShine\Resources\HomeResource;
 use App\MoonShine\Resources\PostResource;
 use App\MoonShine\Resources\ProjectResource;
 use App\MoonShine\Resources\TagResource;
-use MoonShine\Providers\MoonShineApplicationServiceProvider;
-use MoonShine\MoonShine;
-use MoonShine\Menu\MenuGroup;
-use MoonShine\Menu\MenuItem;
-use MoonShine\Resources\MoonShineUserResource;
-use MoonShine\Resources\MoonShineUserRoleResource;
+use Closure;
 use MoonShine\Contracts\Resources\ResourceContract;
 use MoonShine\Menu\MenuElement;
+use MoonShine\Menu\MenuGroup;
+use MoonShine\Menu\MenuItem;
 use MoonShine\Pages\Page;
-use Closure;
+use MoonShine\Providers\MoonShineApplicationServiceProvider;
+use MoonShine\Resources\MoonShineUserResource;
+use MoonShine\Resources\MoonShineUserRoleResource;
 
 class MoonShineServiceProvider extends MoonShineApplicationServiceProvider
 {
