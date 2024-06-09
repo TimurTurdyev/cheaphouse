@@ -3,8 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <base href="{{ asset('/') }}">
 
     <!-- Favicons -->
     <link rel="shortcut icon" href="{{ asset('favicon.png') }}">
@@ -12,7 +11,7 @@
     <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('apple-touch-icon-72x72.png') }}">
     <link rel="apple-touch-icon" sizes="114x114" href="{{ asset('apple-touch-icon-114x114.png') }}">
 
-    <title>{{ $title ?? config('app.name') }}</title>
+    {!! SEO::generate(app()->isProduction()) !!}
 
     <!-- Styles -->
     <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i|Poppins:300,400,500,600,700"

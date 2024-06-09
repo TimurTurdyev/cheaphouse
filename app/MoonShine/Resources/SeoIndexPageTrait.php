@@ -34,7 +34,7 @@ trait SeoIndexPageTrait
                                     ->hint('Минимальное описание страницы')->required(),
                                 Text::make('Сео заголовок', 'seo.title')
                                     ->hint('Должен быть уникальным. Используется в мета тегах')->required(),
-                                Textarea::make('Сео описание', 'seo.text')
+                                Textarea::make('Сео описание', 'seo.description')
                                     ->hint('Используется в мета тегах')->required(),
                             ])->columnSpan(6),
 
@@ -54,7 +54,7 @@ trait SeoIndexPageTrait
             'title' => 'required|string',
             'description' => 'required|string',
             'seo.title' => 'required|string',
-            'seo.text' => 'required|string',
+            'seo.description' => 'required|string',
             'content' => 'nullable|string',
         ]);
 

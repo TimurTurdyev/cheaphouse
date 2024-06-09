@@ -5,12 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\SettingEloquentStorage;
 use App\Models\Tag;
+use Artesaos\SEOTools\Facades\SEOTools;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class HomeController extends Controller
 {
     public function index(SettingEloquentStorage $setting): string
     {
+        $setting = $setting->group('home');
+
         $tags = Tag::query()
             ->with(['posts' => function (BelongsToMany $query) {
                 $query->where('posts.is_published', true);
@@ -46,8 +49,17 @@ class HomeController extends Controller
             ->take(7)
             ->get();
 
+        $settingSeo = $setting->get('seo', [
+            'title' => '',
+            'description' => '',
+        ]);
+
+        SEOTools::setTitle($settingSeo['title']);
+        SEOTools::setDescription($settingSeo['description']);
+        SEOTools::opengraph()->setUrl(request()->url());
+
         return view('welcome', [
-            'setting' => $setting->group('home'),
+            'setting' => $setting,
             'projectTypes' => $tags,
             'projects' => $projects,
             'posts' => $posts,
