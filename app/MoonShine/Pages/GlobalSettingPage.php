@@ -15,6 +15,7 @@ use MoonShine\Decorations\Divider;
 use MoonShine\Decorations\Grid;
 use MoonShine\Decorations\LineBreak;
 use MoonShine\Enums\ToastType;
+use MoonShine\Fields\Code;
 use MoonShine\Fields\Email;
 use MoonShine\Fields\Phone;
 use MoonShine\Fields\Text;
@@ -57,11 +58,13 @@ class GlobalSettingPage extends Page
                                 Phone::make('Телефон', 'phone')->required(),
                                 Email::make('Email', 'email')->required(),
                                 Textarea::make('Адрес', 'address')->required(),
+                                Divider::make(),
+                                Text::make('Название возле логотипа', 'logoTitle')->required(),
+                                Text::make('Название возле логотипа ниже', 'logoSubTitle'),
                             ])->columnSpan(6),
 
                             Column::make([
-                                Text::make('Название возле логотипа', 'logoTitle')->required(),
-                                Text::make('Название возле логотипа ниже', 'logoSubTitle'),
+                                Code::make('Js код аналитики', 'analytics')->language('html'),
                             ])->columnSpan(6)
                         ])
                     ])->fill($this->globalSetting()->all()->toArray())
