@@ -81,6 +81,7 @@ class GlobalSettingPage extends Page
             'address' => ['required', 'string'],
             'logoTitle' => ['required', 'string'],
             'logoSubTitle' => ['required', 'string'],
+            'analytics' => ['nullable', 'string'],
         ]);
 
         $this->globalSetting()->set($requestData);
