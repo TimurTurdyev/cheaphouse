@@ -296,6 +296,8 @@ class HomePage extends Page
         $requestData = $request->validate([
             'title' => ['required', 'string'],
             'text' => ['required', 'string'],
+            'experience' => ['required', 'numeric'],
+            'experienceText' => ['required', 'string'],
         ]);
 
         $fields = Fields::make($this->aboutFields());
@@ -366,7 +368,6 @@ class HomePage extends Page
             ->name('about-form')
             ->asyncMethod(
                 'saveAbout',
-                events: [AlpineJs::event(JsEvent::FORM_RESET, 'about-form')]
             )
             ->fields($this->aboutFields())
             ->fill($this->about())
