@@ -77,7 +77,7 @@ trait PostFiledTrait
                             ->creatable()
                             ->selectMode()
                             ->required(),
-                        Image::make('Основное изображение', 'image')
+                        Image::make('Основное изображение 1920х1080', 'image')
                             ->customName(fn(UploadedFile $file, Field $field) => date('Y-m-d') . '-' . Str::random(10) . '.' . $file->extension())
                             ->disk(config('moonshine.disk', 'public'))
                             ->options(config('moonshine.disk_options', []))
@@ -92,7 +92,7 @@ trait PostFiledTrait
                 Json::make('Блок описания с изображениями', 'content')
                     ->fields([
                         Markdown::make('Текст', 'text')->required(),
-                        Image::make('Карусель изображений под текстом', 'images')
+                        Image::make('Карусель изображений под текстом 1920х1080', 'images')
                             ->customName(fn(UploadedFile $file, Field $field) => date('Y-m-d') . '-' . Str::random(10) . '.' . $file->extension())
                             ->disk(config('moonshine.disk', 'public'))
                             ->options(config('moonshine.disk_options', []))

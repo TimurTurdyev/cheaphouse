@@ -22,6 +22,7 @@ use MoonShine\Enums\ToastType;
 use MoonShine\Fields\Field;
 use MoonShine\Fields\Fields;
 use MoonShine\Fields\Hidden;
+use MoonShine\Fields\ID;
 use MoonShine\Fields\Image;
 use MoonShine\Fields\Number;
 use MoonShine\Fields\Position;
@@ -120,7 +121,7 @@ class HomePage extends Page
     private function bannerFields(array $banner = null): array
     {
         return [
-            Hidden::make(column: 'id')->setValue($banner['id'] ?? '')->required(),
+            ID::make('id')->setValue($banner['id'] ?? ''),
             Text::make('Заголовок', 'title')->setValue($banner['title'] ?? '')->required(),
             Textarea::make('Текст', 'text')->setValue($banner['text'] ?? '')->required(),
             Text::make('Ссылка', 'link')->setValue($banner['link'] ?? '')->hint('https://example.com или оставить пустым, ссылка показывать не будет')->required(),
@@ -170,20 +171,27 @@ class HomePage extends Page
             $currentImage = $image->store($imageFile);
         }
 
-        $id = $request->input('id');
+        $id = $request->input('id', count($bannerItems));
 
-        if ($id) {
-            $bannerItems[$id] = [
-                'id' => $id,
-                'title' => $request->input('title'),
-                'text' => $request->input('text'),
-                'link' => $request->input('link'),
-                'linkText' => $request->input('linkText'),
-                'image' => $currentImage,
-            ];
-        } else {
+        $updated = false;
+
+        foreach ($bannerItems as $index => $bannerItem) {
+            if ((int)$bannerItem['id'] == (int)$id) {
+                $updated = true;
+                $bannerItems[$index] = [
+                    'id' => $id,
+                    'title' => $request->input('title'),
+                    'text' => $request->input('text'),
+                    'link' => $request->input('link'),
+                    'linkText' => $request->input('linkText'),
+                    'image' => $currentImage,
+                ];
+            }
+        }
+
+        if (!$updated) {
             $bannerItems[] = [
-                'id' => count($bannerItems),
+                'id' => $id,
                 'title' => $request->input('title'),
                 'text' => $request->input('text'),
                 'link' => $request->input('link'),
