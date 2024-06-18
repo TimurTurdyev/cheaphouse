@@ -352,7 +352,6 @@ class HomePage extends Page
                         ->options(config('moonshine.disk_options', []))
                         ->dir('home')
                         ->removable()
-                        ->required()
                         ->allowedExtensions(['jpg', 'png', 'jpeg'])
                 ])->columnSpan(6)
             ])
